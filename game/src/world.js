@@ -155,6 +155,7 @@ function stepPlayer(world, input, dt) {
     car.throttle = input.throttle;
     car.steer = input.steer;
     stepCar(car, dt);
+    if (input.brake) car.speed -= car.speed * 2.7 * dt; // the handbrake bites hard
     const impact = collideCarWithCity(car, world.solids);
     if (impact > 105) {
       car.health -= (impact - 95) * 0.10;

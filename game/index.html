@@ -3,16 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Block Dodger</title>
+<title>Palmera Heat</title>
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #11141b; }
-  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  html, body { margin: 0; height: 100%; background: #0b0a14; }
+  body { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  /* The canvas backing store is a fixed 1280x800; CSS scales it to the window keeping
+     the 8:5 shape, letterboxed on the dusk background. */
+  #game { width: min(100vw, 160vh); aspect-ratio: 8 / 5; display: block; touch-action: none; background: #14121f; }
   /* Read aloud, never shown: the status line screen readers announce. */
   #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 </style>
 </head>
 <body>
-<canvas id="game" aria-label="Block Dodger: move the paddle left and right to dodge falling blocks and catch coins"></canvas>
+<canvas id="game" aria-label="Palmera Heat: an open-world driving game. Walk with WASD, press F to enter a car, drive with WASD, P pauses."></canvas>
 <p id="status" role="status" aria-live="polite"></p>
 <script type="module" src="./src/main.js"></script>
 </body>
