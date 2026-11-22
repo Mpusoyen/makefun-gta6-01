@@ -7,6 +7,7 @@ import { STEP } from './config.js';
 import { makeCar } from './vehicles.js';
 import { roadCenterY } from './city.js';
 import { startMission } from './missions.js';
+import { dist } from './rng.js';
 
 const IDLE = { moveX: 0, moveY: 0, steer: 0, throttle: 0, run: false, brake: false, enter: false };
 const DRIVE = { ...IDLE, throttle: 1 };
@@ -50,17 +51,27 @@ export function stageShot(name, world) {
     world.stage = 3; // story done: a courier run is on
     givePlayerCar(world, 1560, roadCenterY(3) + 19, Math.PI, '#3fb8b0', 168);
     startMission(world);
+    // A clear stretch of avenue ahead, so the shot is a cruise, not a pile-up.
+    world.cars = world.cars.filter((c) => c === world.player.car || c.parked
+      || dist(c.x, c.y, world.player.x, world.player.y) > 560);
     return { steps: 55, input: { ...IDLE, throttle: 0.85 } };
   }
 
   if (name === 'mission') {
     world.stage = 1;
     startMission(world); // Four Parcels
-    world.mission.targetIndex = 1;
+    // Stage the most central parcel, so the shot frames player and objective together.
+    let best = 0;
+    let bestScore = -Infinity;
+    world.mission.targets.forEach((t, i) => {
+      const score = -Math.abs(t.x - 1130) - Math.abs(t.y - 974);
+      if (score > bestScore) { bestScore = score; best = i; }
+    });
+    world.mission.targetIndex = best;
     world.mission.timer = 96;
-    const t = world.mission.targets[1];
-    world.player.x = t.x - 30;
-    world.player.y = t.y + 14;
+    const t = world.mission.targets[best];
+    world.player.x = t.x - 62;
+    world.player.y = t.y + 24;
     world.player.angle = Math.atan2(t.y - world.player.y, t.x - world.player.x);
     world.camera.x = world.player.x;
     world.camera.y = world.player.y;
@@ -96,7 +107,7 @@ export function stageShot(name, world) {
   addPolice(world, 742, avenue - 22, 0, 232);
   addTraffic(world, 1310, avenue + 19, 1);
   addTraffic(world, 1620, avenue - 19, -1);
-  return { steps: 78, input: DRIVE };
+  return { steps: 55, input: DRIVE };
 }
 
 export { STEP };

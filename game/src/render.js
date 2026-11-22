@@ -138,7 +138,7 @@ export function createRenderer(canvas) {
 
   function drawBuildings(world, vx, vy, vw, vh) {
     for (const b of world.city.buildings) {
-      if (b.x > vx + vw || b.y > vy + vh || b.x + b.w > vx || b.y + b.h < vy) continue;
+      if (b.x > vx + vw || b.y > vy + vh || b.x + b.w < vx || b.y + b.h < vy) continue;
       ctx.fillStyle = 'rgba(10,8,24,0.38)';
       ctx.fillRect(b.x + 11, b.y + 13, b.w, b.h);
       ctx.fillStyle = b.shaded ??= shade(b.color, b.shade);
@@ -595,7 +595,7 @@ export function createRenderer(canvas) {
     panel(620, 300);
     const lines = [
       ['W A S D / arrows', 'walk and drive'],
-      ['Shift', 'run / —'],
+      ['Shift', 'run (on foot)'],
       ['F', 'enter a car · steal it · talk to Val'],
       ['Space', 'handbrake'],
       ['P or Esc', 'pause'],
